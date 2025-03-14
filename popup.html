@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8" />
+    <title>FT Currency Converter</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            width: 250px;
+            padding: 10px;
+            position: relative;
+            box-sizing: border-box;
+        }
+        input, select, button, label {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            font-size: 1em;
+            box-sizing: border-box; 
+        }
+        #result {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .checkBoxes {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin: 0!important;
+            padding: 0!important;
+            width: 100%;
+        }
+        .switch {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .label-text {
+            font-size: 14px;
+            color: #333;
+            flex: 1;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: relative;
+            cursor: pointer;
+            width: 40px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 20px;
+            transition: 0.4s;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: 0.4s;
+        }
+        input:checked + .slider {
+            background-color: #4CAF50;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .language-buttons {
+            position: absolute;
+            top: 40px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+        }
+        .language-button {
+            border: 1px solid black;
+            cursor: pointer;
+            width: 24px;
+            height: 16px;
+        }
+        .language-button.selected {
+            border: 2px solid green;
+        }
+        @media only screen and (max-device-width: 600px) {
+        body {
+            width: 100%;
+            padding: 10px; 
+            font-size: 14px;
+        }
+
+        button, input, select, label {
+            width: 100%; 
+            margin: 5px 0; 
+            padding: 10px; 
+        }
+
+        h2, h3 {
+            font-size: 18px; 
+        }
+}
+    </style>
+</head>
+<body>
+<h2>FT Converter</h2>
+<h3 id="select-currency-text">Select Currency</h3>
+<div class="language-buttons">
+    <img src="english_flag.png" id="lang-en" class="language-button" alt="English">
+    <img src="serbian_flag.png" id="lang-sr" class="language-button" alt="Serbian">
+</div>
+<div class="checkBoxes">
+    <label for="eurCheckbox" class="switch">
+        <span class="label-text">Show in Euros</span>
+        <input type="checkbox" id="eurCheckbox">
+        <span class="slider"></span>
+    </label>
+</div>
+
+<div class="checkBoxes">
+    <label for="rsdCheckbox" class="switch">
+        <span class="label-text">Show in RSD</span>
+        <input type="checkbox" id="rsdCheckbox">
+        <span class="slider"></span>
+    </label>
+</div>
+
+<div class="checkBoxes">
+    <label for="taxCheckbox" class="switch">
+        <span class="label-text">Show Without Tax</span>
+        <input type="checkbox" id="taxCheckbox">
+        <span class="slider"></span>
+    </label>
+</div>
+
+<input type="number" id="amount" placeholder="Enter amount in FT" />
+<select id="currency">
+    <option value="EUR">Euro (EUR)</option>
+    <option value="RSD">Serbian dinar (RSD)</option>
+</select>
+<button id="convert">Convert</button>
+
+<div id="result"></div>
+
+<script src="popup.js"></script>
+</body>
+</html>
