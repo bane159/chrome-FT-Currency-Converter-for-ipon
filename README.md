@@ -57,9 +57,8 @@ Open the extension popup to configure:
 
 ##  Exchange Rates
 
-The extension uses the following conversion rates:
-- **1 HUF = 0.0025 EUR**
-- **1 HUF = 0.29 RSD**
+The exchange rates were served by an api https://api.exchangerate-api.com/v4/latest/HUF.
+
 
 ##  Technical Details
 
