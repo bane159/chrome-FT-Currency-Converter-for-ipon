@@ -1,6 +1,6 @@
 # FT Currency Converter for ipon | iponcomp
 
-[![Chrome Web Store]](https://chromewebstore.google.com/detail/ft-currency-converter-for/onmfnonfcdfemifednnolgdmhakjaglf?utm_source=ext_app_menu)
+[!Chrome Web Store](https://chromewebstore.google.com/detail/ft-currency-converter-for/onmfnonfcdfemifednnolgdmhakjaglf?utm_source=ext_app_menu)
 
 A Chrome extension that automatically converts Hungarian Forint (FT) prices to EUR or RSD on iponcomp.com. **Currently used by real users and published on the Chrome Web Store!**
 
