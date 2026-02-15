@@ -1,7 +1,6 @@
 window.onload = () => {
     main();
-
-    autoUpdatePrices();
+    observeNewProducts();
 };
 
 if (typeof browser !== "undefined") {
@@ -24,15 +23,35 @@ if (typeof browser !== "undefined") {
     });
 }
 
-let debounceTimeout;
-
-function debouncedMain() {
-    clearTimeout(debounceTimeout);
-    debounceTimeout = setTimeout(main, 500);
+function observeNewProducts() {
+    const observer = new MutationObserver((mutations) => {
+        const newPriceEls = new Set();
+        for (const mutation of mutations) {
+            for (const node of mutation.addedNodes) {
+                if (node.nodeType !== Node.ELEMENT_NODE) continue;
+                if (node.classList?.contains('product-price') && !node.hasAttribute('data-converted')) {
+                    newPriceEls.add(node);
+                }
+                node.querySelectorAll?.('.product-price:not([data-converted])').forEach(el => newPriceEls.add(el));
+            }
+        }
+        if (newPriceEls.size > 0) {
+            processNewPriceElements([...newPriceEls]);
+        }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
 }
 
-document.addEventListener('click', debouncedMain);
-document.addEventListener('keydown', debouncedMain);
+async function processNewPriceElements(elements) {
+    const rates = await getConversionRates();
+    const storage = getStorageAPI();
+    storage.get(["showEUR", "showRSD", "showWithTax"], (data) => {
+        const showEUR = data.showEUR ?? true;
+        const showRSD = data.showRSD ?? true;
+        const showWithTax = data.showWithTax ?? true;
+        injectPrices(elements, showEUR, showRSD, showWithTax, rates);
+    });
+}
 
 async function main(showEUR = null, showRSD = null, showWithTax = null) {
     let rates = await getConversionRates();
@@ -53,9 +72,14 @@ async function main(showEUR = null, showRSD = null, showWithTax = null) {
 }
 
 function updatePrices(showEUR, showRSD, showWithTax, rates) {
-    document.querySelectorAll('.product-price').forEach(el => {
-        let conversions = el.parentNode.querySelectorAll('[data-conversion]');
-        conversions.forEach(conversion => conversion.remove());
+    const elements = document.querySelectorAll('.product-price');
+    injectPrices([...elements], showEUR, showRSD, showWithTax, rates);
+}
+
+function injectPrices(elements, showEUR, showRSD, showWithTax, rates) {
+    elements.forEach(el => {
+        // Remove any existing conversions
+        el.parentNode.querySelectorAll('[data-conversion]').forEach(c => c.remove());
 
         const ftValue = parseFloat(el.textContent.replace(/[^\d.]/g, ''));
         if (!isNaN(ftValue)) {
@@ -69,6 +93,7 @@ function updatePrices(showEUR, showRSD, showWithTax, rates) {
                 rsdDiv.setAttribute('data-conversion', 'rsd');
                 el.parentNode.appendChild(rsdDiv);
             }
+            el.setAttribute('data-converted', 'true');
         }
     });
 }
@@ -116,9 +141,7 @@ function getWithNoTax(value){
     return Math.round(value * 0.8);
 }
 
-function autoUpdatePrices() {
-    setInterval(main, 5000);     
-}
+
 
 
 

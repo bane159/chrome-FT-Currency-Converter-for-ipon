@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "FT Currency Converter for ipon | iponcomp",
-  "version": "1.1.1",
+  "version": "1.2",
   "description": "Convert Hungarian Forints to EUR or RSD. Automatically insert EUR or RSD values into iponcomp prices.",
   "action": {
     "default_popup": "popup.html",
